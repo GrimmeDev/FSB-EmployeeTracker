@@ -21,7 +21,30 @@ function selectManager(mngs) {
     }]);
 };
 
+function selectEmpManager(mngs) {
+    mngs.unshift("None");
+    return inquirer.prompt([{
+        type: "list",
+        message: "Select a Manager:",
+        name: "mng",
+        choices: mngs
+    }]);
+};
+
+function getManagerID(connection, mng) {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT id from employees WHERE CONCAT(first_name, ' ', last_name) = ?", mng.mng, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        });
+    });
+};
+
 module.exports = {
     displayManagers,
-    selectManager
+    selectManager,
+    selectEmpManager,
+    getManagerID
 };
