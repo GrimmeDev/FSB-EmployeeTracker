@@ -1,5 +1,7 @@
 const mysql = require("mysql");
+const cTable = require("console.table");
 const { viewAllEmployess, viewEmpsByDepartment } = require("./model/displayData");
+const { selectDepartment, displayDepartments } = require("./questions/askForDept");
 const askMainMenu = require("./questions/askMainMenu");
 
 
@@ -18,13 +20,19 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-        data = viewAllEmployess();
-        console.table(data);
+        empList = await viewAllEmployess(connection);
+        console.table(empList);
+        start();
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
-        data = viewEmpsByDepartment();
-        console.table(data);
+        deptSelect = await displayDepartments(connection);
+        // console.log(deptSelect);
+        deptSelected = await selectDepartment(deptSelect);
+        // console.log(deptSelected);
+        deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
+        console.table(deptList);
+        start();
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
@@ -61,10 +69,12 @@ async function start() {
     }
     else if (menu === "Exit") {
         // exits
+        connection.end();
+        process.exit(0);
     }
     else {
         console.log("Invalid option selected, please select a valid option");
     }
 };
 
-connection.connect(async()=> start());
+connection.connect(async () => start());
