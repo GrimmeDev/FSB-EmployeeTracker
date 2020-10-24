@@ -65,4 +65,6 @@ async function start() {
     else {
         console.log("Invalid option selected, please select a valid option");
     }
-}
+};
+
+connection.connect(async()=> start());
