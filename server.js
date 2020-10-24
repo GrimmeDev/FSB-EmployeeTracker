@@ -1,6 +1,8 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { viewAllEmployess, viewEmpsByDepartment } = require("./model/displayData");
+const { viewAllEmployess, viewEmpsByDepartment,
+    displayEmpsByManager } = require("./model/displayData");
+const { displayManagers, selectManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments } = require("./questions/askForDept");
 const askMainMenu = require("./questions/askMainMenu");
 
@@ -12,8 +14,6 @@ const connection = mysql.createConnection({
     password: "ecZ4khM4G26T3eAz1h0q",
     database: "company_db"
 });
-
-let data;
 
 async function start() {
     // display menu and save menu choice
@@ -27,7 +27,7 @@ async function start() {
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
         deptSelect = await displayDepartments(connection);
-        // console.log(deptSelect);
+        console.log(deptSelect);
         deptSelected = await selectDepartment(deptSelect);
         // console.log(deptSelected);
         deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
@@ -36,6 +36,13 @@ async function start() {
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
+        mngSelect = await displayManagers(connection);
+        // console.log(mngSelect);
+        mngSelected = await selectManager(mngSelect);
+        // console.log(mngSelected.mng);
+        empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
+        console.table(empListByMng);
+        start();
     }
     else if (menu === "Add Employee") {
         // adds employee
@@ -70,6 +77,7 @@ async function start() {
     else if (menu === "Exit") {
         // exits
         connection.end();
+        // console.clear();
         process.exit(0);
     }
     else {
