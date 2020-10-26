@@ -22,7 +22,7 @@ function selectManager(mngs) {
 };
 
 function selectEmpManager(mngs) {
-    mngs.unshift("None");
+    // mngs.unshift("None");
     return inquirer.prompt([{
         type: "list",
         message: "Select a Manager:",

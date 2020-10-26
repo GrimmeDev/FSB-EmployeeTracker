@@ -23,27 +23,27 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-        let empList = await viewAllEmployess(connection);
+        empList = await viewAllEmployess(connection);
         console.table(empList);
         start();
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
-        let deptSelect = await displayDepartments(connection);
+        deptSelect = await displayDepartments(connection);
         // console.log(deptSelect);
-        let deptSelected = await selectDepartment(deptSelect);
+        deptSelected = await selectDepartment(deptSelect);
         // console.log(deptSelected);
-        let deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
+        deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
         console.table(deptList);
         start();
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
-        let mngSelect = await displayManagers(connection);
-        // console.log(mngSelect);
-        let mngSelected = await selectManager(mngSelect);
-        // console.log(mngSelected.mng);
-        let empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
+        mngSelect = await displayManagers(connection);
+        console.log(mngSelect);
+        mngSelected = await selectManager(mngSelect);
+        console.log(mngSelected.mng);
+        empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
         console.table(empListByMng);
         start();
     }
@@ -51,15 +51,21 @@ async function start() {
         // adds employee
         // Asks for name of employee
         empName = await askForName();
-        console.log("Emp Name: " + empName);
+        // console.log("Emp Name: ");
+        // console.log(empName);
         // Asks for employee Role
         roleList = await displayRoles(connection);
         // console.log("Role List: " + roleList); // NOTE: roleList will return [object Object]'s until next line
         roleSelected = await selectRoles(roleList);
-        console.log("Selected Role: " + roleSelected.role);
+        // console.log("Selected Role: ");
+        // console.log(roleSelected.role);
         // figure out way to grab ID of role
         mngList = await displayManagers(connection);
-        console.log("Manager List: " + mngList);
+        console.log("Manager List: ");
+        console.log(mngList);
+        // mngSelected = await selectEmpManager(connection, mngList);
+        // console.log("Selected Manager: ");
+        // console.log(mngSelected);
 
         start();
     }
