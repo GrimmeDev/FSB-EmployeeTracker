@@ -63,9 +63,9 @@ async function start() {
         mngList = await displayManagers(connection);
         console.log("Manager List: ");
         console.log(mngList);
-        // mngSelected = await selectEmpManager(connection, mngList);
-        // console.log("Selected Manager: ");
-        // console.log(mngSelected);
+        mngSelected = await selectEmpManager(mngList);
+        console.log("Selected Manager: ");
+        console.log(mngSelected);
 
         start();
     }
