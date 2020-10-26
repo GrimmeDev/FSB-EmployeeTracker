@@ -23,17 +23,18 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-        allEmps = await getAllEmps(connection);
-        console.table(allEmps);
+        empList = await viewAllEmployess(connection);
+        console.table(empList);
         start();
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
-        // get list of Departments
-        allDepts = await getDepartments(connection);
-        console.table(allDepts);
-
-
+        deptSelect = await displayDepartments(connection);
+        // console.log(deptSelect);
+        deptSelected = await selectDepartment(deptSelect);
+        // console.log(deptSelected);
+        deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
+        console.table(deptList);
         start();
     }
     else if (menu === "View All Employees by Manager") {
