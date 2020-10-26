@@ -26,15 +26,16 @@ function selectRoles(roles) {
 };
 
 function getRoleID(connection, role) {
+    console.log("Get ID of Role: " + role);
     return new Promise((resolve, reject) => {
-        connection.query("SELECT id FROM roles WHERE title = ?", role.role, function (err, data) {
+        connection.query("SELECT id FROM roles WHERE title = ?", role, function (err, data) {
             if (err)
                 reject(err);
             else
                 resolve(data);
-        })
-    })
-}
+        });
+    });
+};
 
 module.exports = {
     displayRoles,

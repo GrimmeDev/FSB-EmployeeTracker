@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 
-function askForName(dept) {
+function askForName() {
     return inquirer.prompt([{
         type: "input",
         message: "What is the employees first name?",
@@ -56,6 +56,17 @@ function displayEmpsByManager(connection, mng) {
                 reject(err);
             else
                 resolve(data);
+        });
+    });
+};
+
+function getEmpsByName(connection) {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT CONCAT(emp.first_name, ' ', emp.last_name) AS employee FROM employees as emp", function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
         })
     })
 }
@@ -64,5 +75,6 @@ module.exports = {
     askForName,
     viewAllEmployess,
     viewEmpsByDepartment,
-    displayEmpsByManager
+    displayEmpsByManager,
+    getEmpsByName
 }

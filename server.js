@@ -2,13 +2,11 @@ const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee } = require("./model/adjustData");
 const { displayManagers, selectManager,
-    selectEmpManager, getManagerID } = require("./questions/askForMng");
+    selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments } = require("./questions/askForDept");
 const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
-const { askForName,
-    viewAllEmployess,
-    viewEmpsByDepartment,
-    displayEmpsByManager } = require("./questions/askForData");
+const { askForName, viewAllEmployess, viewEmpsByDepartment,
+    displayEmpsByManager, getEmpsByName } = require("./questions/askForData");
 const askMainMenu = require("./questions/askMainMenu");
 
 
@@ -25,52 +23,53 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-        empList = await viewAllEmployess(connection);
+        let empList = await viewAllEmployess(connection);
         console.table(empList);
         start();
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
-        deptSelect = await displayDepartments(connection);
+        let deptSelect = await displayDepartments(connection);
         // console.log(deptSelect);
-        deptSelected = await selectDepartment(deptSelect);
+        let deptSelected = await selectDepartment(deptSelect);
         // console.log(deptSelected);
-        deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
+        let deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
         console.table(deptList);
         start();
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
-        mngSelect = await displayManagers(connection);
+        let mngSelect = await displayManagers(connection);
         // console.log(mngSelect);
-        mngSelected = await selectManager(mngSelect);
+        let mngSelected = await selectManager(mngSelect);
         // console.log(mngSelected.mng);
-        empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
+        let empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
         console.table(empListByMng);
         start();
     }
     else if (menu === "Add Employee") {
         // adds employee
+        // Asks for name of employee
         empName = await askForName();
-        // console.log(empName);
-        roleSelect = await displayRoles(connection);
-        // console.log(roleSelect);
-        roleSelected = await selectRoles(roleSelect);
-        console.log("In menuAddEmp: " + roleSelected);
-        roleID = await getRoleID(connection, roleSelected);
-        console.log("In menuAddEmp: " + roleID);
-        mngSelect = await displayManagers(connection);
-        // // console.log(mngSelect);
-        mngSelected = await selectEmpManager(mngSelect);
-        console.log("In menuAddEmp: " + mngSelected);
-        mngID = await getManagerID(connection, mngSelected);
-        console.log("In menuAddEmp: " + mngID);
-        results = await addEmployee(connection, empName, roleID, mngID);
-        console.log(`Inserted ${results.affectedRows} entries.`);
+        console.log("Emp Name: " + empName);
+        // Asks for employee Role
+        roleList = await displayRoles(connection);
+        // console.log("Role List: " + roleList); // NOTE: roleList will return [object Object]'s until next line
+        roleSelected = await selectRoles(roleList);
+        console.log("Selected Role: " + roleSelected.role);
+        // figure out way to grab ID of role
+        mngList = await displayManagers(connection);
+        console.log("Manager List: " + mngList);
+
         start();
     }
     else if (menu === "Remove Employee") {
         // deletes employee
+        // display all employees names
+        empList = await getEmpsByName(connection);
+        console.log("List of emps" + empList);
+
+        start();
     }
     else if (menu === "Update Employee Role") {
         // change role of employee

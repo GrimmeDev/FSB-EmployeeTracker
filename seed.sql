@@ -23,7 +23,7 @@ CREATE TABLE roles(
 INSERT INTO roles(title, salary, department_id)
 VALUES("Developer", 34000, 3),("Dev Lead", 42000, 3),
 ("Technician", 30000, 1),("SysAdmin", 50000, 1),
-("Manager", 25000, 3),("Coordinator", 38000, 3);
+("Manager", 25000, 2),("Coordinator", 38000, 2);
 
 CREATE TABLE employees(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
