@@ -1,14 +1,5 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { addEmployee } = require("./model/adjustData");
-const { displayManagers, selectManager,
-    selectEmpManager, getManagerID } = require("./questions/askForMng");
-const { selectDepartment, displayDepartments } = require("./questions/askForDept");
-const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
-const { askForName,
-    viewAllEmployess,
-    viewEmpsByDepartment,
-    displayEmpsByManager } = require("./questions/askForData");
 const askMainMenu = require("./questions/askMainMenu");
 
 
@@ -25,49 +16,19 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-        empList = await viewAllEmployess(connection);
-        console.table(empList);
-        start();
+
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
-        deptSelect = await displayDepartments(connection);
-        // console.log(deptSelect);
-        deptSelected = await selectDepartment(deptSelect);
-        // console.log(deptSelected);
-        deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
-        console.table(deptList);
-        start();
+
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
-        mngSelect = await displayManagers(connection);
-        // console.log(mngSelect);
-        mngSelected = await selectManager(mngSelect);
-        // console.log(mngSelected.mng);
-        empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
-        console.table(empListByMng);
-        start();
+
     }
     else if (menu === "Add Employee") {
         // adds employee
-        empName = await askForName();
-        // console.log(empName);
-        roleSelect = await displayRoles(connection);
-        // console.log(roleSelect);
-        roleSelected = await selectRoles(roleSelect);
-        console.log("In menuAddEmp: " + roleSelected);
-        roleID = await getRoleID(connection, roleSelected);
-        console.log("In menuAddEmp: " + roleID);
-        mngSelect = await displayManagers(connection);
-        // // console.log(mngSelect);
-        mngSelected = await selectEmpManager(mngSelect);
-        console.log("In menuAddEmp: " + mngSelected);
-        mngID = await getManagerID(connection, mngSelected);
-        console.log("In menuAddEmp: " + mngID);
-        results = await addEmployee(connection, empName, roleID, mngID);
-        console.log(`Inserted ${results.affectedRows} entries.`);
-        start();
+
     }
     else if (menu === "Remove Employee") {
         // deletes employee
