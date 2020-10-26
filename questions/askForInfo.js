@@ -16,4 +16,18 @@ function askMainMenu() {
     ]);
 };
 
-module.exports = askMainMenu;
+function getDepartments(connection) {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT name AS department FROM departments", function (err, data) {
+            if (err)
+                reject(err)
+            else
+                resolve(data);
+        })
+    })
+}
+
+module.exports = {
+    askMainMenu,
+    getDepartments
+};

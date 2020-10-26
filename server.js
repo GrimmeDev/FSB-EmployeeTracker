@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const askMainMenu = require("./questions/askMainMenu");
+const { askMainMenu, getDepartments } = require("./questions/askForInfo");
+const { getAllEmps } = require("./fetchData/empData");
 
 
 const connection = mysql.createConnection({
@@ -16,11 +17,18 @@ async function start() {
     const { menu } = await askMainMenu();
     if (menu === "View All Employees") {
         // display all employees
-
+        allEmps = await getAllEmps(connection);
+        console.table(allEmps);
+        start();
     }
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
+        // get list of Departments
+        allDepts = await getDepartments(connection);
+        console.table(allDepts);
 
+
+        start();
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
