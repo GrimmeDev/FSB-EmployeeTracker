@@ -1,7 +1,13 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { askMainMenu, getDepartments } = require("./questions/askForInfo");
-const { getAllEmps } = require("./fetchData/empData");
+const { addEmployee } = require("./model/adjustData");
+const { displayManagers, selectManager,
+    selectEmpManager } = require("./questions/askForMng");
+const { selectDepartment, displayDepartments } = require("./questions/askForDept");
+const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
+const { askForName, viewAllEmployess, viewEmpsByDepartment,
+    displayEmpsByManager, getEmpsByName } = require("./questions/askForData");
+const askMainMenu = require("./questions/askMainMenu");
 
 
 const connection = mysql.createConnection({
@@ -32,14 +38,43 @@ async function start() {
     }
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
-
+        mngSelect = await displayManagers(connection);
+        console.log(mngSelect);
+        mngSelected = await selectManager(mngSelect);
+        console.log(mngSelected.mng);
+        empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
+        console.table(empListByMng);
+        start();
     }
     else if (menu === "Add Employee") {
         // adds employee
+        // Asks for name of employee
+        empName = await askForName();
+        // console.log("Emp Name: ");
+        // console.log(empName);
+        // Asks for employee Role
+        roleList = await displayRoles(connection);
+        // console.log("Role List: " + roleList); // NOTE: roleList will return [object Object]'s until next line
+        roleSelected = await selectRoles(roleList);
+        // console.log("Selected Role: ");
+        // console.log(roleSelected.role);
+        // figure out way to grab ID of role
+        mngList = await displayManagers(connection);
+        console.log("Manager List: ");
+        console.log(mngList);
+        // mngSelected = await selectEmpManager(connection, mngList);
+        // console.log("Selected Manager: ");
+        // console.log(mngSelected);
 
+        start();
     }
     else if (menu === "Remove Employee") {
         // deletes employee
+        // display all employees names
+        empList = await getEmpsByName(connection);
+        console.log("List of emps" + empList);
+
+        start();
     }
     else if (menu === "Update Employee Role") {
         // change role of employee
