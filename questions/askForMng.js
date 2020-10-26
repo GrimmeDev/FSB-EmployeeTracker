@@ -31,8 +31,21 @@ function selectEmpManager(mngs) {
     }]);
 };
 
+function getMngID(connection, mng) {
+    console.log("Get ID of Manager: " + mng);
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT id FROM employees WHERE CONCAT(first_name, ' ', last_name) = ?", mng, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        });
+    });
+};
+
 module.exports = {
     displayManagers,
     selectManager,
     selectEmpManager,
+    getMngID
 };
