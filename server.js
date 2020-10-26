@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee } = require("./model/adjustData");
 const { displayManagers, selectManager,
-    selectEmpManager } = require("./questions/askForMng");
+    selectEmpManager, getMngID } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments } = require("./questions/askForDept");
 const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
 const { askForName, viewAllEmployess, viewEmpsByDepartment,
@@ -59,13 +59,26 @@ async function start() {
         roleSelected = await selectRoles(roleList);
         // console.log("Selected Role: ");
         // console.log(roleSelected.role);
-        // figure out way to grab ID of role
+        // Gets ID value of selected Role
+        roleID = await getRoleID(connection, roleSelected.role);
+        // console.log("Role ID:");
+        // console.log(roleID);
+        // Asks for employee Manager, none is an option
         mngList = await displayManagers(connection);
         console.log("Manager List: ");
         console.log(mngList);
         mngSelected = await selectEmpManager(mngList);
         console.log("Selected Manager: ");
         console.log(mngSelected);
+        // Gets ID value of selected Role, if none wasn't selected
+        if (mngSelected.mng !== "None") {
+            mngID = await getMngID(connection, mngSelected.mng);
+        }
+        else {
+            mngID = null;
+        }
+        console.log("Manager ID:");
+        console.log(mngID);
 
         start();
     }
