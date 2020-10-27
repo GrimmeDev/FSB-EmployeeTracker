@@ -67,14 +67,38 @@ function getEmpsByName(connection) {
                 reject(err);
             else
                 resolve(data);
-        })
-    })
-}
+        });
+    });
+};
+
+function selectEmpByName(emps) {
+    empList = emps.map(el => el.employee);
+    return inquirer.prompt({
+        type: "list",
+        message: "Which employee would you like to remove?",
+        name: "emp",
+        choices: empList
+    });
+};
+
+function getEmpID(connection, emp) {
+    // console.log("Get ID of Manager: " + emp);
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT id FROM employees WHERE CONCAT(first_name, ' ', last_name) = ?", emp, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        });
+    });
+};
 
 module.exports = {
     askForName,
     viewAllEmployess,
     viewEmpsByDepartment,
     displayEmpsByManager,
-    getEmpsByName
+    getEmpsByName,
+    selectEmpByName,
+    getEmpID
 }
