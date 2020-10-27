@@ -1,9 +1,9 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { addEmployee, removeEmp } = require("./model/adjustData");
+const { addEmployee, removeEmp, updateRole } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
-const { selectDepartment, displayDepartments } = require("./questions/askForDept");
+const { selectDepartment, displayDepartments, getDeptID } = require("./questions/askForDept");
 const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
 const { askForName, viewAllEmployess, viewEmpsByDepartment,
     displayEmpsByManager, getEmpsByName, selectEmpByName,
@@ -41,9 +41,9 @@ async function start() {
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
         mngSelect = await displayManagers(connection);
-        console.log(mngSelect);
+        // console.log(mngSelect);
         mngSelected = await selectManager(mngSelect);
-        console.log(mngSelected.mng);
+        // console.log(mngSelected.mng);
         empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
         console.table(empListByMng);
         start();
@@ -63,10 +63,9 @@ async function start() {
         // Gets ID value of selected Role
         roleID = await getRoleID(connection, roleSelected.role);
         // console.log("Role ID:");
-        // cons:");
         // console.table(roleID);
         // Asks for employee Manager, none is an option
-        ole.log(roleID);
+        // console.log(roleID);
         // console.log("Internal of Role ID mngList = await displayManagers(connection);
         // console.log("Manager List: ");
         // console.log(mngList);
@@ -96,17 +95,40 @@ async function start() {
         // console.log("List of Employees");
         // console.log(empList);
         empSelected = await selectEmpByName(empList);
-        console.log("Selected Emp:");
-        console.log(empSelected);
+        // console.log("Selected Emp:");
+        // console.log(empSelected);
         empID = await getEmpID(connection, empSelected.emp);
-        console.log("Emp ID:");
-        console.log(empID);
+        // console.log("Emp ID:");
+        // console.log(empID);
         results = await removeEmp(connection, empID[0].id);
         console.log(`Inserted ${results.affectedRows} entries`);
         start();
     }
     else if (menu === "Update Employee Role") {
         // change role of employee
+        // get list of employees
+        empList = await getEmpsByName(connection);
+        // select an employee
+        empSelected = await selectEmpByName(empList);
+        // console.log("Selected Emp:");
+        // console.log(empSelected);
+        // get emp ID
+        empID = await getEmpID(connection, empSelected.emp);
+        // console.log("Emp ID:");
+        // console.log(empID);
+        // get list of departments
+        roleList = await displayRoles(connection);
+        // select a department
+        roleSelected = await selectRoles(roleList);
+        // console.log("Selected department");
+        // console.log(roleSelected);
+        // get ID of role
+        roleID = await getRoleID(connection, roleSelected.role);
+        // console.log("Role ID:");
+        // console.log(roleID);
+        results = await updateRole(connection, roleID[0].id, empID[0].id);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "Update Employee Manager") {
         // change manager of employee
