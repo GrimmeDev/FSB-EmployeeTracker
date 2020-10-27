@@ -2,7 +2,7 @@ const inquirer = require("inquirer");
 
 function displayDepartments(connection) {
     return new Promise((resolve, reject) => {
-        let sqlQuery = "SELECT * FROM departments";
+        let sqlQuery = "SELECT name FROM departments";
 
         connection.query(sqlQuery, function (err, data) {
             if (err)
