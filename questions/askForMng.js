@@ -37,6 +37,7 @@ function getMngID(connection, mng) {
         connection.query("SELECT id FROM employees WHERE CONCAT(first_name, ' ', last_name) = ?", mng, function (err, data) {
             if (err)
                 reject(err);
+                // return ([{ id: 0 }]);
             else
                 resolve(data);
         });
