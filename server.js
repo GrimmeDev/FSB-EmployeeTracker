@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee, removeEmp, updateRole, updateManager,
-    addRole, deleteRole, addDept } = require("./model/adjustData");
+    addRole, deleteRole, addDept, removeDept } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments,
@@ -206,8 +206,8 @@ async function start() {
         // add department
         // asks user for new department name
         deptName = await getDeptName();
-        console.log("Dept Name:");
-        console.log(deptName);
+        // console.log("Dept Name:");
+        // console.log(deptName);
         // deptName.name
         results = await addDept(connection, deptName.name);
         console.log(`Inserted ${results.affectedRows} entries`);
@@ -215,6 +215,20 @@ async function start() {
     }
     else if (menu === "Remove Department") {
         // delete department
+        // get list of departments
+        deptList = await displayDepartments(connection);
+        // user selects department to remove
+        deptSelected = await selectDepartment(deptList);
+        // console.log("Selected Department");
+        // console.log(deptSelected);
+        // get department ID
+        deptID = await getDeptID(connection, deptSelected.dept);
+        // console.log("Department ID:");
+        // console.log(deptID);
+        // deptID.id
+        results = await removeDept(connection, deptID[0].id);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "Exit") {
         // exits

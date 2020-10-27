@@ -93,6 +93,18 @@ function addDept(connection, dept) {
     });
 };
 
+function removeDept(connection, dept) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "DELETE FROM departments WHERE id = ?";
+        connection.query(sqlQuery, dept, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        })
+    })
+}
+
 module.exports = {
     addEmployee,
     removeEmp,
@@ -100,5 +112,6 @@ module.exports = {
     updateManager,
     addRole,
     deleteRole,
-    addDept
+    addDept,
+    removeDept
 };
