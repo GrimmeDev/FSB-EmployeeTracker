@@ -195,7 +195,7 @@ async function start() {
     else if (menu === "Exit") {
         // exits
         connection.end();
-        // console.clear();
+        console.clear();
         process.exit(0);
     }
 };
