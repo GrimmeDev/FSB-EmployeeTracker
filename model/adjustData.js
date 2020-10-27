@@ -39,6 +39,18 @@ function updateRole(connection, roleID, empID) {
                 reject(err);
             else
                 resolve(data);
+        });
+    });
+};
+
+function updateManager(connection, mngID, empID) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "UPDATE employees AS emp SET manager_id = ? WHERE emp.id = ?";
+        connection.query(sqlQuery, [mngID, empID], function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
         })
     })
 }
@@ -46,5 +58,6 @@ function updateRole(connection, roleID, empID) {
 module.exports = {
     addEmployee,
     removeEmp,
-    updateRole
+    updateRole,
+    updateManager
 };

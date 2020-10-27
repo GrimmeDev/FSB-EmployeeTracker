@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { addEmployee, removeEmp, updateRole } = require("./model/adjustData");
+const { addEmployee, removeEmp, updateRole, updateManager } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments, getDeptID } = require("./questions/askForDept");
@@ -132,6 +132,25 @@ async function start() {
     }
     else if (menu === "Update Employee Manager") {
         // change manager of employee
+        // get list of employees
+        empList = await getEmpsByName(connection);
+        // select an employee
+        empSelected = await selectEmpByName(empList);
+        // get emp ID
+        empID = await getEmpID(connection, empSelected.emp);
+        // console.log("Emp ID:");
+        // console.log(empID);
+        // select a manager
+        mngSelect = await displayManagers(connection);
+        // console.log(mngSelect);
+        mngSelected = await selectManager(mngSelect);
+        // get manager ID
+        mngID = await getEmpID(connection, mngSelected.mng);
+        // console.log("Mng ID:");
+        // console.log(mngID);
+        results = await updateManager(connection, mngID[0].id, empID[0].id);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "View All Roles") {
         // display all roles
