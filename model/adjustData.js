@@ -80,11 +80,25 @@ function deleteRole(connection, role) {
     });
 };
 
+function addDept(connection, dept) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "INSERT INTO departments (name)";
+        sqlQuery += "VALUES (?)";
+        connection.query(sqlQuery, dept, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        });
+    });
+};
+
 module.exports = {
     addEmployee,
     removeEmp,
     updateRole,
     updateManager,
     addRole,
-    deleteRole
+    deleteRole,
+    addDept
 };

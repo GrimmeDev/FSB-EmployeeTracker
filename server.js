@@ -1,10 +1,11 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee, removeEmp, updateRole, updateManager,
-    addRole, deleteRole } = require("./model/adjustData");
+    addRole, deleteRole, addDept } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
-const { selectDepartment, displayDepartments, getDeptID } = require("./questions/askForDept");
+const { selectDepartment, displayDepartments,
+    getDeptID, getDeptName } = require("./questions/askForDept");
 const { displayRoles, selectRoles, getRoleID, getRoleTitle } = require("./questions/askForRole");
 const { askForName, viewAllEmployess, viewEmpsByDepartment,
     displayEmpsByManager, getEmpsByName, selectEmpByName,
@@ -203,6 +204,14 @@ async function start() {
     }
     else if (menu === "Add Department") {
         // add department
+        // asks user for new department name
+        deptName = await getDeptName();
+        console.log("Dept Name:");
+        console.log(deptName);
+        // deptName.name
+        results = await addDept(connection, deptName.name);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "Remove Department") {
         // delete department
