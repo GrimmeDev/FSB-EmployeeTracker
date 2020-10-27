@@ -26,7 +26,7 @@ function selectRoles(roles) {
 };
 
 function getRoleID(connection, role) {
-    console.log("Get ID of Role: " + role);
+    // console.log("Get ID of Role: " + role);
     return new Promise((resolve, reject) => {
         connection.query("SELECT id FROM roles WHERE title = ?", role, function (err, data) {
             if (err)
