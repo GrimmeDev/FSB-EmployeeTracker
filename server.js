@@ -1,10 +1,11 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { addEmployee, removeEmp, updateRole, updateManager } = require("./model/adjustData");
+const { addEmployee, removeEmp, updateRole, updateManager,
+    addRole } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments, getDeptID } = require("./questions/askForDept");
-const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
+const { displayRoles, selectRoles, getRoleID, getRoleTitle } = require("./questions/askForRole");
 const { askForName, viewAllEmployess, viewEmpsByDepartment,
     displayEmpsByManager, getEmpsByName, selectEmpByName,
     getEmpID } = require("./questions/askForData");
@@ -159,6 +160,27 @@ async function start() {
     }
     else if (menu === "Add Role") {
         // add role
+        // ask for role name and salary
+        newRole = await getRoleTitle();
+        // console.log("Role to add:");
+        // console.log(newRole);
+        // newRole.title and newRole.salary
+        // get list of departments
+        deptList = await displayDepartments(connection);
+        // user selects department to add role into
+        deptSelected = await selectDepartment(deptList);
+        // console.log("Selected Department:");
+        // console.log(deptSelected);
+        // deptSelected.dept
+        // gets ID of selected department
+        deptID = await getDeptID(connection, deptSelected.dept);
+        // console.log("Department ID");
+        // console.log(deptID);
+        // deptID.id
+        // adds role to database
+        results = await addRole(connection, newRole, deptID[0].id);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "Remove Role") {
         // delete role

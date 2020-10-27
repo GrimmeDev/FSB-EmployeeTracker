@@ -55,9 +55,23 @@ function updateManager(connection, mngID, empID) {
     })
 }
 
+function addRole(connection, role, deptID) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "INSERT INTO roles (title, salary, department_id)";
+        sqlQuery+= "VALUES (?, ?, ?)";
+        connection.query(sqlQuery, [role.title, role.salary, deptID], function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        })
+    })
+}
+
 module.exports = {
     addEmployee,
     removeEmp,
     updateRole,
-    updateManager
+    updateManager,
+    addRole
 };
