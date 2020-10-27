@@ -1,12 +1,13 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
-const { addEmployee } = require("./model/adjustData");
+const { addEmployee, removeEmp } = require("./model/adjustData");
 const { displayManagers, selectManager,
-    selectEmpManager, getMngID } = require("./questions/askForMng");
+    selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments } = require("./questions/askForDept");
 const { displayRoles, selectRoles, getRoleID } = require("./questions/askForRole");
 const { askForName, viewAllEmployess, viewEmpsByDepartment,
-    displayEmpsByManager, getEmpsByName } = require("./questions/askForData");
+    displayEmpsByManager, getEmpsByName, selectEmpByName,
+    getEmpID } = require("./questions/askForData");
 const askMainMenu = require("./questions/askMainMenu");
 
 
@@ -65,7 +66,7 @@ async function start() {
         // cons:");
         // console.table(roleID);
         // Asks for employee Manager, none is an option
-       ole.log(roleID);
+        ole.log(roleID);
         // console.log("Internal of Role ID mngList = await displayManagers(connection);
         // console.log("Manager List: ");
         // console.log(mngList);
@@ -74,7 +75,7 @@ async function start() {
         // console.log(mngSelected);
         // Gets ID value of selected Role, if none wasn't selected
         if (mngSelected.mng !== "None") {
-            mngID = await getMngID(connection, mngSelected.mng);
+            mngID = await getEmpID(connection, mngSelected.mng);
             // console.log("Manager ID:");
             // console.log(mngID);
             // connection, empName, roleID, mngID
@@ -92,9 +93,16 @@ async function start() {
         // deletes employee
         // display all employees names
         empList = await getEmpsByName(connection);
-        console.log("List of Employees");
-        console.log(empList);
-
+        // console.log("List of Employees");
+        // console.log(empList);
+        empSelected = await selectEmpByName(empList);
+        console.log("Selected Emp:");
+        console.log(empSelected);
+        empID = await getEmpID(connection, empSelected.emp);
+        console.log("Emp ID:");
+        console.log(empID);
+        results = await removeEmp(connection, empID[0].id);
+        console.log(`Inserted ${results.affectedRows} entries`);
         start();
     }
     else if (menu === "Update Employee Role") {
