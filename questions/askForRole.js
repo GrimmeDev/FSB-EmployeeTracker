@@ -47,8 +47,8 @@ function getRoleTitle() {
         message: "Salary of the role?",
         name: "salary"
     }
-    ])
-}
+    ]);
+};
 
 module.exports = {
     displayRoles,
