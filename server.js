@@ -62,31 +62,38 @@ async function start() {
         // Gets ID value of selected Role
         roleID = await getRoleID(connection, roleSelected.role);
         // console.log("Role ID:");
-        // console.log(roleID);
+        // cons:");
+        // console.table(roleID);
         // Asks for employee Manager, none is an option
-        mngList = await displayManagers(connection);
-        console.log("Manager List: ");
-        console.log(mngList);
+       ole.log(roleID);
+        // console.log("Internal of Role ID mngList = await displayManagers(connection);
+        // console.log("Manager List: ");
+        // console.log(mngList);
         mngSelected = await selectEmpManager(mngList);
-        console.log("Selected Manager: ");
-        console.log(mngSelected);
+        // console.log("Selected Manager: ");
+        // console.log(mngSelected);
         // Gets ID value of selected Role, if none wasn't selected
         if (mngSelected.mng !== "None") {
             mngID = await getMngID(connection, mngSelected.mng);
+            // console.log("Manager ID:");
+            // console.log(mngID);
+            // connection, empName, roleID, mngID
+            results = await addEmployee(connection, empName, roleID[0].id, mngID[0].id);
         }
         else {
-            mngID = null;
+            // connection, empName, roleID, mngID
+            // slot for mngID set to 0 for SQL Query conditional of NULLIF(?, 0)
+            results = await addEmployee(connection, empName, roleID[0].id, 0);
         }
-        console.log("Manager ID:");
-        console.log(mngID);
-
+        console.log(`Inserted ${results.affectedRows} entries`);
         start();
     }
     else if (menu === "Remove Employee") {
         // deletes employee
         // display all employees names
         empList = await getEmpsByName(connection);
-        console.log("List of emps" + empList);
+        console.log("List of Employees");
+        console.log(empList);
 
         start();
     }
