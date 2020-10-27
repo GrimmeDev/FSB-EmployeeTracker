@@ -7,6 +7,7 @@ A MySQL based CLI application using Node/Inquirer/MySQL plugins for javascript
 * [Usage](#Usage)
 * [License](#License)
 * [Testing](#Testing)
+* [Example Images](#Examples)
 * [Questions](#Questions)
 
 ## Installation
@@ -31,6 +32,10 @@ After running the `npm install`, type in the command `node server.js`,You will t
 MIT
 ### Testing
 No testing needed, simply run the program as directed in the Usage above
+#### Example Images
+![Example application start](Assets/exampleStart.png)<br>
+![Example adding employee](Assets/exampleAddEmp.png)<br>
+![Example view of roles](Assets/exampleRoleView.png)
 #### Questions?
 If you have questions regarding this program:<br>
 Send me a message through GitHub: [![GitHub Link](https://img.shields.io/badge/Github-GrimmeDev-lightgrey.svg)](https://github.com/GrimmeDev)<br>
