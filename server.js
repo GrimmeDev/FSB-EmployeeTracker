@@ -65,8 +65,7 @@ async function start() {
         // console.log("Role ID:");
         // console.table(roleID);
         // Asks for employee Manager, none is an option
-        // console.log(roleID);
-        // console.log("Internal of Role ID mngList = await displayManagers(connection);
+        mngList = await displayManagers(connection);
         // console.log("Manager List: ");
         // console.log(mngList);
         mngSelected = await selectEmpManager(mngList);
