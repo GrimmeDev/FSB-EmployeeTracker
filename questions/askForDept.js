@@ -22,7 +22,20 @@ function selectDepartment(dept) {
     }]);
 };
 
+function getDeptID(connection, dept) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "SELECT id FROM departments AS dept WHERE dept.name = ?";
+        connection.query(sqlQuery, dept, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        })
+    })
+}
+
 module.exports = {
     displayDepartments,
-    selectDepartment
+    selectDepartment,
+    getDeptID
 };
