@@ -100,5 +100,5 @@ module.exports = {
     displayEmpsByManager,
     getEmpsByName,
     selectEmpByName,
-    getEmpID
+    getEmpID,
 }
