@@ -1,3 +1,4 @@
+//#region File and Requirement Declaration
 const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee, removeEmp, updateRole, updateManager,
@@ -11,8 +12,9 @@ const { askForName, viewAllEmployess, viewEmpsByDepartment,
     displayEmpsByManager, getEmpsByName, selectEmpByName,
     getEmpID } = require("./questions/askForData");
 const askMainMenu = require("./questions/askMainMenu");
+//#endregion
 
-
+//#region Connection Info
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -20,7 +22,8 @@ const connection = mysql.createConnection({
     password: "ecZ4khM4G26T3eAz1h0q",
     database: "company_db"
 });
-
+//#endregion
+//#region Main Application
 async function start() {
     // display menu and save menu choice
     const { menu } = await askMainMenu();
@@ -33,9 +36,9 @@ async function start() {
     else if (menu === "View All Employees by Department") {
         // displays employees of selected department
         deptSelect = await displayDepartments(connection);
-        // console.log(deptSelect);
+        // asks user to select a department
         deptSelected = await selectDepartment(deptSelect);
-        // console.log(deptSelected);
+        // displays list of of employes in that department
         deptList = await viewEmpsByDepartment(connection, deptSelected.dept);
         console.table(deptList);
         start();
@@ -43,9 +46,9 @@ async function start() {
     else if (menu === "View All Employees by Manager") {
         // displays employees of selected manager
         mngSelect = await displayManagers(connection);
-        // console.log(mngSelect);
+        // asks user to select a manager
         mngSelected = await selectManager(mngSelect);
-        // console.log(mngSelected.mng);
+        // displays list of employees under the selected manager
         empListByMng = await displayEmpsByManager(connection, mngSelected.mng);
         console.table(empListByMng);
         start();
@@ -54,35 +57,21 @@ async function start() {
         // adds employee
         // Asks for name of employee
         empName = await askForName();
-        // console.log("Emp Name: ");
-        // console.log(empName);
         // Asks for employee Role
         roleList = await displayRoles(connection);
-        // console.log("Role List: " + roleList); // NOTE: roleList will return [object Object]'s until next line
         roleSelected = await selectRoles(roleList);
-        // console.log("Selected Role: ");
-        // console.log(roleSelected.role);
         // Gets ID value of selected Role
         roleID = await getRoleID(connection, roleSelected.role);
-        // console.log("Role ID:");
-        // console.table(roleID);
         // Asks for employee Manager, none is an option
         mngList = await displayManagers(connection);
-        // console.log("Manager List: ");
-        // console.log(mngList);
         mngSelected = await selectEmpManager(mngList);
-        // console.log("Selected Manager: ");
-        // console.log(mngSelected);
-        // Gets ID value of selected Role, if none wasn't selected
+        // conditional if user selected None for manager
         if (mngSelected.mng !== "None") {
+            // Gets ID value of selected Role, if none wasn't selected
             mngID = await getEmpID(connection, mngSelected.mng);
-            // console.log("Manager ID:");
-            // console.log(mngID);
-            // connection, empName, roleID, mngID
             results = await addEmployee(connection, empName, roleID[0].id, mngID[0].id);
         }
         else {
-            // connection, empName, roleID, mngID
             // slot for mngID set to 0 for SQL Query conditional of NULLIF(?, 0)
             results = await addEmployee(connection, empName, roleID[0].id, 0);
         }
@@ -93,14 +82,11 @@ async function start() {
         // deletes employee
         // display all employees names
         empList = await getEmpsByName(connection);
-        // console.log("List of Employees");
-        // console.log(empList);
+        // asks user to select an employee
         empSelected = await selectEmpByName(empList);
-        // console.log("Selected Emp:");
-        // console.log(empSelected);
+        // gets the ID value of the selected employee
         empID = await getEmpID(connection, empSelected.emp);
-        // console.log("Emp ID:");
-        // console.log(empID);
+        // deletes selected employee by ID
         results = await removeEmp(connection, empID[0].id);
         console.log(`Inserted ${results.affectedRows} entries`);
         start();
@@ -111,22 +97,15 @@ async function start() {
         empList = await getEmpsByName(connection);
         // select an employee
         empSelected = await selectEmpByName(empList);
-        // console.log("Selected Emp:");
-        // console.log(empSelected);
         // get emp ID
         empID = await getEmpID(connection, empSelected.emp);
-        // console.log("Emp ID:");
-        // console.log(empID);
         // get list of departments
         roleList = await displayRoles(connection);
         // select a department
         roleSelected = await selectRoles(roleList);
-        // console.log("Selected department");
-        // console.log(roleSelected);
         // get ID of role
         roleID = await getRoleID(connection, roleSelected.role);
-        // console.log("Role ID:");
-        // console.log(roleID);
+        // updates selected employee to contain new role
         results = await updateRole(connection, roleID[0].id, empID[0].id);
         console.log(`Inserted ${results.affectedRows} entries`);
         start();
@@ -139,16 +118,13 @@ async function start() {
         empSelected = await selectEmpByName(empList);
         // get emp ID
         empID = await getEmpID(connection, empSelected.emp);
-        // console.log("Emp ID:");
-        // console.log(empID);
         // select a manager
         mngSelect = await displayManagers(connection);
-        // console.log(mngSelect);
+        // asks user to select a manager
         mngSelected = await selectManager(mngSelect);
         // get manager ID
         mngID = await getEmpID(connection, mngSelected.mng);
-        // console.log("Mng ID:");
-        // console.log(mngID);
+        // updates selected employee to have new manager
         results = await updateManager(connection, mngID[0].id, empID[0].id);
         console.log(`Inserted ${results.affectedRows} entries`);
         start();
@@ -163,20 +139,14 @@ async function start() {
         // add role
         // ask for role name and salary
         newRole = await getRoleTitle();
-        // console.log("Role to add:");
-        // console.log(newRole);
         // newRole.title and newRole.salary
         // get list of departments
         deptList = await displayDepartments(connection);
         // user selects department to add role into
         deptSelected = await selectDepartment(deptList);
-        // console.log("Selected Department:");
-        // console.log(deptSelected);
         // deptSelected.dept
         // gets ID of selected department
         deptID = await getDeptID(connection, deptSelected.dept);
-        // console.log("Department ID");
-        // console.log(deptID);
         // deptID.id
         // adds role to database
         results = await addRole(connection, newRole, deptID[0].id);
@@ -189,8 +159,6 @@ async function start() {
         roleList = await displayRoles(connection);
         // prompt user to select a role
         roleSelected = await selectRoles(roleList);
-        // console.log("Selected Role:");
-        // console.log(roleSelected);
         // roleSelected.role
         results = await deleteRole(connection, roleSelected.role);
         console.log(`Inserted ${results.affectedRows} entries`);
@@ -206,8 +174,6 @@ async function start() {
         // add department
         // asks user for new department name
         deptName = await getDeptName();
-        // console.log("Dept Name:");
-        // console.log(deptName);
         // deptName.name
         results = await addDept(connection, deptName.name);
         console.log(`Inserted ${results.affectedRows} entries`);
@@ -219,12 +185,8 @@ async function start() {
         deptList = await displayDepartments(connection);
         // user selects department to remove
         deptSelected = await selectDepartment(deptList);
-        // console.log("Selected Department");
-        // console.log(deptSelected);
         // get department ID
         deptID = await getDeptID(connection, deptSelected.dept);
-        // console.log("Department ID:");
-        // console.log(deptID);
         // deptID.id
         results = await removeDept(connection, deptID[0].id);
         console.log(`Inserted ${results.affectedRows} entries`);
@@ -237,5 +199,6 @@ async function start() {
         process.exit(0);
     }
 };
-
+//#endregion
+// App starts when node server.js called
 connection.connect(async () => start());

@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-
+// gets all roles
 function displayRoles(connection) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "SELECT title FROM roles";
@@ -11,7 +11,7 @@ function displayRoles(connection) {
         });
     });
 };
-
+// displays all roles by title only
 function selectRoles(roles) {
     // console.log("In select Roles: " + roles);
     roleList = roles.map(el => el.title);
@@ -23,7 +23,7 @@ function selectRoles(roles) {
         choices: roleList
     }]);
 };
-
+// gets ID of specific role
 function getRoleID(connection, role) {
     // console.log("Get ID of Role: " + role);
     return new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ function getRoleID(connection, role) {
         });
     });
 };
-
+// allows user to dictate a new role title and salary
 function getRoleTitle() {
     return inquirer.prompt([{
         type: "input",

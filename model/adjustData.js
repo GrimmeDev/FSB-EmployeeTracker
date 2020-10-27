@@ -1,10 +1,6 @@
+// Adds new employee to database
+// NULLIF(?,0) allows an entry to be null (used if the user selects None on manager option)
 function addEmployee(connection, empName, roleID, mngID) {
-    // console.log("Emp Name:");
-    // console.log(empName);
-    // console.log("In addEmp, roleID: ");
-    // console.log(roleID);
-    // console.log("In addEmp, mngID: ");
-    // console.log(mngID);
     return new Promise((resolve, reject) => {
         let sqlQuery = "INSERT INTO employees (first_name, last_name, roles_id, manager_id)"
         sqlQuery += " VALUES (?, ?, ?, NULLIF(?,0))";
@@ -16,7 +12,7 @@ function addEmployee(connection, empName, roleID, mngID) {
         });
     });
 };
-
+// Removes employee from database by ID
 function removeEmp(connection, empID) {
     console.log("Emp ID");
     console.log(empID);
@@ -30,7 +26,7 @@ function removeEmp(connection, empID) {
         })
     })
 }
-
+// Updates employee role by ID
 function updateRole(connection, roleID, empID) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "UPDATE employees AS emp SET roles_id = ? WHERE emp.id = ?";
@@ -42,7 +38,7 @@ function updateRole(connection, roleID, empID) {
         });
     });
 };
-
+// Updates employee manager by ID
 function updateManager(connection, mngID, empID) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "UPDATE employees AS emp SET manager_id = ? WHERE emp.id = ?";
@@ -54,7 +50,7 @@ function updateManager(connection, mngID, empID) {
         });
     });
 };
-
+// Adds new role to the database
 function addRole(connection, role, deptID) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "INSERT INTO roles (title, salary, department_id)";
@@ -67,7 +63,7 @@ function addRole(connection, role, deptID) {
         });
     });
 };
-
+// Deletes role from database
 function deleteRole(connection, role) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "DELETE FROM roles WHERE title = ?";
@@ -79,7 +75,7 @@ function deleteRole(connection, role) {
         });
     });
 };
-
+// Add department to database
 function addDept(connection, dept) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "INSERT INTO departments (name)";
@@ -92,7 +88,7 @@ function addDept(connection, dept) {
         });
     });
 };
-
+// Deletes department from database
 function removeDept(connection, dept) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "DELETE FROM departments WHERE id = ?";
