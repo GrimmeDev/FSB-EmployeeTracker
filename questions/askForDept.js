@@ -30,12 +30,22 @@ function getDeptID(connection, dept) {
                 reject(err);
             else
                 resolve(data);
-        })
-    })
-}
+        });
+    });
+};
+
+function getDeptName() {
+    return inquirer.prompt([{
+        type: "input",
+        message: "Title of role to add?",
+        name: "name"
+    }
+    ]);
+};
 
 module.exports = {
     displayDepartments,
     selectDepartment,
-    getDeptID
+    getDeptID,
+    getDeptName
 };
