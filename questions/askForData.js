@@ -75,7 +75,7 @@ function selectEmpByName(emps) {
     empList = emps.map(el => el.employee);
     return inquirer.prompt({
         type: "list",
-        message: "Which employee would you like to remove?",
+        message: "Which employee would you like to select?",
         name: "emp",
         choices: empList
     });
