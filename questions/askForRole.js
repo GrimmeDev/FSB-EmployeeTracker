@@ -36,8 +36,23 @@ function getRoleID(connection, role) {
     });
 };
 
+function getRoleTitle() {
+    return inquirer.prompt([{
+        type: "input",
+        message: "Title of role to add?",
+        name: "title"
+    },
+    {
+        type: "input",
+        message: "Salary of the role?",
+        name: "salary"
+    }
+    ])
+}
+
 module.exports = {
     displayRoles,
     selectRoles,
-    getRoleID
+    getRoleID,
+    getRoleTitle
 }
