@@ -17,6 +17,21 @@ function addEmployee(connection, empName, roleID, mngID) {
     });
 };
 
+function removeEmp(connection, empID) {
+    console.log("Emp ID");
+    console.log(empID);
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "DELETE FROM employees AS emp WHERE emp.id = ?;";
+        connection.query(sqlQuery, empID, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        })
+    })
+}
+
 module.exports = {
-    addEmployee
+    addEmployee,
+    removeEmp
 };
