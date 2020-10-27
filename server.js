@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const cTable = require("console.table");
 const { addEmployee, removeEmp, updateRole, updateManager,
-    addRole } = require("./model/adjustData");
+    addRole, deleteRole } = require("./model/adjustData");
 const { displayManagers, selectManager,
     selectEmpManager } = require("./questions/askForMng");
 const { selectDepartment, displayDepartments, getDeptID } = require("./questions/askForDept");
@@ -184,6 +184,16 @@ async function start() {
     }
     else if (menu === "Remove Role") {
         // delete role
+        // get list of roles
+        roleList = await displayRoles(connection);
+        // prompt user to select a role
+        roleSelected = await selectRoles(roleList);
+        // console.log("Selected Role:");
+        // console.log(roleSelected);
+        // roleSelected.role
+        results = await deleteRole(connection, roleSelected.role);
+        console.log(`Inserted ${results.affectedRows} entries`);
+        start();
     }
     else if (menu === "View All Departments") {
         // display all departments

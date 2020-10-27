@@ -51,27 +51,40 @@ function updateManager(connection, mngID, empID) {
                 reject(err);
             else
                 resolve(data);
-        })
-    })
-}
+        });
+    });
+};
 
 function addRole(connection, role, deptID) {
     return new Promise((resolve, reject) => {
         let sqlQuery = "INSERT INTO roles (title, salary, department_id)";
-        sqlQuery+= "VALUES (?, ?, ?)";
+        sqlQuery += "VALUES (?, ?, ?)";
         connection.query(sqlQuery, [role.title, role.salary, deptID], function (err, data) {
             if (err)
                 reject(err);
             else
                 resolve(data);
-        })
-    })
-}
+        });
+    });
+};
+
+function deleteRole(connection, role) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "DELETE FROM roles WHERE title = ?";
+        connection.query(sqlQuery, role, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        });
+    });
+};
 
 module.exports = {
     addEmployee,
     removeEmp,
     updateRole,
     updateManager,
-    addRole
+    addRole,
+    deleteRole
 };
