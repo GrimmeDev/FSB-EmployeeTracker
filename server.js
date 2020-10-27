@@ -154,6 +154,9 @@ async function start() {
     }
     else if (menu === "View All Roles") {
         // display all roles
+        roleList = await displayRoles(connection);
+        console.table(roleList);
+        start();
     }
     else if (menu === "Add Role") {
         // add role
@@ -163,6 +166,9 @@ async function start() {
     }
     else if (menu === "View All Departments") {
         // display all departments
+        deptList = await displayRoles(connection);
+        console.table(deptList);
+        start();
     }
     else if (menu === "Add Department") {
         // add department
