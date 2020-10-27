@@ -13,6 +13,7 @@ A MySQL based CLI application using Node/Inquirer/MySQL plugins for javascript
 ## Installation
 Run a `npm install` after cloning down or downloading the repository
 ## Usage
+VIDEO INSTRUCTIONS <a href="https://drive.google.com/file/d/1IaUlkkahaYvGQr0Kn1HEoCkJAqylzyNE/view">Click here for the video</a><br>
 After running the `npm install`, type in the command `node server.js`,You will then be prompted with a menu option selection of 14 choices
 1) View all Employees - Display all employees in the database
 2) View All Emp.. by Department - Displays all employees in a given department
