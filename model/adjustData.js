@@ -21,8 +21,20 @@ function removeEmp(connection, empID) {
     console.log("Emp ID");
     console.log(empID);
     return new Promise((resolve, reject) => {
-        let sqlQuery = "DELETE FROM employees AS emp WHERE emp.id = ?;";
+        let sqlQuery = "DELETE FROM employees AS emp WHERE emp.id = ?";
         connection.query(sqlQuery, empID, function (err, data) {
+            if (err)
+                reject(err);
+            else
+                resolve(data);
+        })
+    })
+}
+
+function updateRole(connection, roleID, empID) {
+    return new Promise((resolve, reject) => {
+        let sqlQuery = "UPDATE employees AS emp SET roles_id = ? WHERE emp.id = ?";
+        connection.query(sqlQuery, [roleID, empID], function (err, data) {
             if (err)
                 reject(err);
             else
@@ -33,5 +45,6 @@ function removeEmp(connection, empID) {
 
 module.exports = {
     addEmployee,
-    removeEmp
+    removeEmp,
+    updateRole
 };
